@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz Game</title>
+  <link rel="stylesheet" href="task_03.css" />
+</head>
+<body>
+
+  <div class="box">
+
+    <!-- Quiz Area -->
+    <div id="quizArea">
+      <h1>Quiz Game</h1>
+
+      <div id="progressText">Question 1 of 6</div>
+      <div id="progressBar"><div id="progressFill"></div></div>
+
+      <span id="questionType">MCQ</span>
+      <p id="questionText"></p>
+
+      <!-- Options for MCQ -->
+      <div id="optionArea"></div>
+
+      <!-- Input for Fill in the Blank -->
+      <input type="text" id="fillInput" class="hidden" placeholder="Type your answer..." />
+
+      <p id="feedback"></p>
+      <button id="nextBtn" onclick="nextClicked()">Submit Answer</button>
+    </div>
+
+    <!-- Result Area -->
+    <div id="resultScreen">
+      <h2>Quiz Finished!</h2>
+      <div id="scoreText"></div>
+      <p id="resultMsg"></p>
+      <button id="restartBtn" onclick="restart()">Play Again</button>
+    </div>
+
+  </div>
+
+  <script>
+
+    // ===== QUESTIONS =====
+    var questions = [
+      {
+        type: "mcq",
+        question: "What does CSS stand for?",
+        options: ["Counter Style Sheets", "Cascading Style Sheets", "Creative Style System", "Colorful Style Syntax"],
+        answer: 1
+      },
+      {
+        type: "mcq",
+        question: "Which planet is closest to the Sun?",
+        options: ["Venus", "Earth", "Mercury", "Mars"],
+        answer: 2
+      },
+      {
+        type: "mcq",
+        question: "What does 'var' do in JavaScript?",
+        options: ["Creates a function", "Declares a variable", "Imports a file", "Deletes a value"],
+        answer: 1
+      },
+      {
+        type: "fill",
+        question: "What tag is used to create a hyperlink in HTML?",
+        answer: "a"
+      },
+      {
+        type: "mcq",
+        question: "Which one is NOT a programming language?",
+        options: ["Python", "Java", "HTML", "C++"],
+        answer: 2
+      },
+      {
+        type: "fill",
+        question: "How many days are in a leap year?",
+        answer: "366"
+      }
+    ];
+
+    var current = 0;
+    var score = 0;
+    var answered = false;
+
+    // Load first question
+    loadQuestion();
+
+    function loadQuestion() {
+      answered = false;
+
+      var q = questions[current];
+      var total = questions.length;
+
+      document.getElementById("progressText").innerText = "Question " + (current + 1) + " of " + total;
+      document.getElementById("progressFill").style.width = ((current / total) * 100) + "%";
+      document.getElementById("feedback").innerText = "";
+      document.getElementById("feedback").className = "";
+      document.getElementById("nextBtn").innerText = "Submit Answer";
+      document.getElementById("questionText").innerText = q.question;
+
+      // Reset both input areas
+      document.getElementById("optionArea").innerHTML = "";
+      document.getElementById("optionArea").classList.remove("hidden");
+      document.getElementById("fillInput").classList.add("hidden");
+      document.getElementById("fillInput").value = "";
+      document.getElementById("fillInput").style.borderColor = "#2a2a4a";
+
+      if (q.type == "mcq") {
+        document.getElementById("questionType").innerText = "Multiple Choice";
+        for (var i = 0; i < q.options.length; i++) {
+          var btn = document.createElement("button");
+          btn.className = "option";
+          btn.innerText = q.options[i];
+          btn.setAttribute("data-index", i);
+          btn.onclick = selectOption;
+          document.getElementById("optionArea").appendChild(btn);
+        }
+      }
+
+      if (q.type == "fill") {
+        document.getElementById("questionType").innerText = "Fill in the Blank";
+        document.getElementById("optionArea").classList.add("hidden");
+        document.getElementById("fillInput").classList.remove("hidden");
+        document.getElementById("fillInput").focus();
+      }
+    }
+
+    function selectOption() {
+      if (answered) return;
+      // Remove selected class from all
+      var allOptions = document.querySelectorAll(".option");
+      for (var i = 0; i < allOptions.length; i++) {
+        allOptions[i].style.borderColor = "#2a2a4a";
+      }
+      // Highlight this one
+      this.style.borderColor = "#2980b9";
+      // Store selection
+      document.getElementById("optionArea").setAttribute("data-selected", this.getAttribute("data-index"));
+    }
+
+    function nextClicked() {
+      var q = questions[current];
+
+      if (!answered) {
+        // Check answer
+        if (q.type == "mcq") {
+          var selected = document.getElementById("optionArea").getAttribute("data-selected");
+          if (selected == null || selected == "") {
+            alert("Please select an option!");
+            return;
+          }
+
+          selected = parseInt(selected);
+          var allOptions = document.querySelectorAll(".option");
+
+          if (selected == q.answer) {
+            score++;
+            allOptions[selected].classList.add("correct");
+            document.getElementById("feedback").innerText = "Correct! Well done!";
+            document.getElementById("feedback").className = "good";
+          } else {
+            allOptions[selected].classList.add("wrong");
+            allOptions[q.answer].classList.add("correct");
+            document.getElementById("feedback").innerText = "Wrong! Correct answer: " + q.options[q.answer];
+            document.getElementById("feedback").className = "bad";
+          }
+        }
+
+        if (q.type == "fill") {
+          var userAns = document.getElementById("fillInput").value.trim().toLowerCase();
+          if (userAns == "") {
+            alert("Please type an answer!");
+            return;
+          }
+
+          if (userAns == q.answer.toLowerCase()) {
+            score++;
+            document.getElementById("fillInput").style.borderColor = "#27ae60";
+            document.getElementById("feedback").innerText = "Correct! Well done!";
+            document.getElementById("feedback").className = "good";
+          } else {
+            document.getElementById("fillInput").style.borderColor = "#e74c3c";
+            document.getElementById("feedback").innerText = "Wrong! Correct answer: " + q.answer;
+            document.getElementById("feedback").className = "bad";
+          }
+        }
+
+        answered = true;
+        // Change button text
+        if (current < questions.length - 1) {
+          document.getElementById("nextBtn").innerText = "Next Question";
+        } else {
+          document.getElementById("nextBtn").innerText = "See Result";
+        }
+        return;
+      }
+
+      // Go to next question or show result
+      current++;
+      if (current < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById("quizArea").style.display = "none";
+      document.getElementById("resultScreen").style.display = "block";
+
+      document.getElementById("scoreText").innerText = score + " / " + questions.length;
+
+      var percent = (score / questions.length) * 100;
+      var msg = "";
+      if (percent == 100) msg = "Perfect score! Amazing!";
+      else if (percent >= 60) msg = "Good job! Keep it up!";
+      else msg = "Try again, you can do better!";
+
+      document.getElementById("resultMsg").innerText = msg;
+    }
+
+    function restart() {
+      current = 0;
+      score = 0;
+      answered = false;
+      document.getElementById("quizArea").style.display = "block";
+      document.getElementById("resultScreen").style.display = "none";
+      loadQuestion();
+    }
+
+    // Press Enter to submit fill answer
+    document.getElementById("fillInput").addEventListener("keydown", function(e) {
+      if (e.key == "Enter") nextClicked();
+    });
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+
+
+    body {
+      background-color: #1a1a2e;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: white;
+      padding: 20px;
+    }
+
+    .box {
+      background-color: #16213e;
+      border-radius: 12px;
+      padding: 30px;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #e74c3c;
+      margin-bottom: 20px;
+      font-size: 26px;
+    }
+
+    /* Progress */
+    #progressText {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    #progressBar {
+      height: 6px;
+      background-color: #2a2a4a;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    #progressFill {
+      height: 6px;
+      background-color: #e74c3c;
+      border-radius: 4px;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    /* Question */
+    #questionType {
+      font-size: 12px;
+      color: #e74c3c;
+      background-color: #2a1a2e;
+      padding: 3px 10px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    #questionText {
+      font-size: 18px;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+
+    /* MCQ Options */
+    .option {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background-color: #1a1a2e;
+      color: white;
+      border: 2px solid #2a2a4a;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .option:hover {
+      border-color: #e74c3c;
+    }
+
+    .option.correct {
+      border-color: #27ae60;
+      background-color: #1a3a2e;
+    }
+
+    .option.wrong {
+      border-color: #e74c3c;
+      background-color: #3a1a1a;
+    }
+
+    /* Fill input */
+    #fillInput {
+      width: 100%;
+      padding: 12px;
+      background-color: #1a1a2e;
+      border: 2px solid #2a2a4a;
+      border-radius: 8px;
+      color: white;
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    #fillInput:focus {
+      border-color: #e74c3c;
+    }
+
+    /* Feedback */
+    #feedback {
+      font-size: 15px;
+      margin-bottom: 14px;
+      min-height: 22px;
+    }
+
+    .good { color: #27ae60; }
+    .bad  { color: #e74c3c; }
+
+    /* Next button */
+    #nextBtn {
+      width: 100%;
+      padding: 13px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #nextBtn:hover {
+      background-color: #c0392b;
+    }
+
+    /* Result screen */
+    #resultScreen {
+      text-align: center;
+      display: none;
+    }
+
+    #resultScreen h2 {
+      font-size: 28px;
+      color: #e74c3c;
+      margin-bottom: 16px;
+    }
+
+    #scoreText {
+      font-size: 64px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    #resultMsg {
+      color: #ccc;
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+
+    #restartBtn {
+      padding: 12px 30px;
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #restartBtn:hover {
+      background-color: #1e8449;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+  
